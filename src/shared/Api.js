@@ -6,7 +6,6 @@ export class ValidationError extends Error {
   constructor(message, validationErrors) {
     super(message);
 
-    Error.captureStackTrace(this, this.constructor);
     this.name = "ValidationError";
 
     this.validationErrors = validationErrors;
@@ -49,13 +48,10 @@ export default class Api {
       if (type && type.indexOf("json") != -1) {
         let jsonResponse = await response.json();
         if (jsonResponse.ModelState) {
-          throw new ValidationError(
-            jsonResponse.Message,
-            jsonResponse.ModelState
-          );
+          throw new ValidationError(jsonResponse.message);
         } else {
           throw new Error(
-            jsonResponse.Message ||
+            jsonResponse.message ||
               jsonResponse.error_description ||
               jsonResponse.error
           );

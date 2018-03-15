@@ -1,7 +1,3 @@
-/**
- * Created by nikollasbetiol on 17/04/17.
- * @flow
- */
 import { createStore, applyMiddleware, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
 import promiseMiddleware from "redux-promise-middleware";
@@ -14,15 +10,12 @@ const createAppStore = compose(
   applyMiddleware(promiseMiddleware(), thunkMiddleware)
 )(createStore);
 
-const whitelistReducers = ["vehicles", "vehicleMonitoring"];
-
 export default function configureStore(callback) {
   const store = autoRehydrate()(createAppStore)(reducers);
   let persistor = persistStore(
     store,
     {
       storage: AsyncStorage,
-      whitelist: whitelistReducers,
       debounce: 10000
     },
     (err, state) => {

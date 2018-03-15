@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   isFetching: false,
-  account: [],
+  dashboard: [],
   error: null
 };
 
@@ -17,7 +17,7 @@ export const dashboard = (state = initialState, action) => {
       break;
     }
     case FETCH_DASHBOARD_FULFILLED: {
-      return { ...state, isFetching: false, account: action.payload };
+      return { ...state, isFetching: false, dashboard: action.payload };
       break;
     }
     case FETCH_DASHBOARD_ERROR: {

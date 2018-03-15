@@ -11,6 +11,11 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import { RenderDrawerMenu } from "@components/DrawerUtils";
 import { Icon, Card, Avatar } from "react-native-elements";
 import { requestAccount } from "@actions/account";
+import {
+  StyledContainerView,
+  TextAmount,
+  ContainerRowWithSpaceBetween
+} from "@shared/Styled";
 
 class Dashboard extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -31,30 +36,11 @@ class Dashboard extends React.Component {
             <Text style={{ paddingBottom: 5, color: Colors.terciaryColor }}>
               Contas
             </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between"
-              }}
-            >
-              <Avatar
-                small
-                rounded
-                title="BB"
-                onPress={() => console.log("Works!")}
-                activeOpacity={0.7}
-              />
+            <ContainerRowWithSpaceBetween>
+              <Avatar small rounded title="BB" />
               <Text style={{ paddingTop: 5 }}>{acc.name}</Text>
-              <Text
-                style={{
-                  paddingTop: 5,
-                  color: "#3498db",
-                  fontWeight: "bold"
-                }}
-              >
-                R$ {acc.amount}
-              </Text>
-            </View>
+              <Text style={styles.accountAmount}>R$ {acc.amount}</Text>
+            </ContainerRowWithSpaceBetween>
           </Card>
         </View>
       );
@@ -62,32 +48,17 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    let { isFetching, accounts } = this.props;
+    let { isFetching } = this.props;
     {
       isFetching && <LoadingSpinner isVisible={isFetching} />;
     }
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            backgroundColor: Colors.primaryColor
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 40,
-              paddingTop: 40,
-              color: "#fff",
-              textAlign: "center"
-            }}
-          >
-            R$ {"350,06"}
-          </Text>
+      <StyledContainerView>
+        <View style={styles.containerAccount}>
+          <TextAmount>{"R$ 350,06"}</TextAmount>
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
-      </View>
+      </StyledContainerView>
     );
   }
 }
@@ -97,8 +68,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center"
   },
-  map: {
-    ...StyleSheet.absoluteFillObject
+
+  containerAccount: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: Colors.primaryColor
+  },
+  accountAmount: {
+    paddingTop: 5,
+    color: "#3498db",
+    fontWeight: "bold"
   }
 });
 

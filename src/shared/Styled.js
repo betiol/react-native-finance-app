@@ -3,29 +3,16 @@ import Colors from "@shared/Colors";
 
 export const StyledContainerView = styled.View`
   flex: 1;
-  background-color: #fff;
 `;
 
-export const StyledRouteText = styled.Text`
-  color: #424242;
-  font-weight: bold;
-  font-size: 16;
+export const TextAmount = styled.Text`
+  font-size: 40;
+  padding-top: 40;
+  color: #fff;
+  text-align: center;
 `;
 
-export const BoldTextStyled = styled.Text`
-  margin-left: 7px;
-  margin-top: 7px;
-  margin-right: 7px;
-  font-weight: bold;
-`;
-
-export const TextStyled = styled.Text`
-  margin-left: 7px;
-  margin-bottom: 7px;
-`;
-
-export const StyledView = styled.View`
+export const ContainerRowWithSpaceBetween = styled.View`
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
 `;
