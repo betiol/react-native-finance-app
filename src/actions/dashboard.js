@@ -9,19 +9,19 @@ export const requestDashboard = () => {
   return async dispatch => {
     dispatch({ type: FETCH_DASHBOARD_LOADING });
     try {
-      let vehicles = await Api.live();
-      dispatch(dashboardRequestSuccess(dispatch, vehicles));
+      let account = await Api.account();
+      dispatch(dashboardRequestSuccess(dispatch, account));
     } catch (err) {
       dispatch(dashboardRequestError(err));
     }
   };
 };
 
-export const dashboardRequestSuccess = (dispatch, vehicles) => {
+export const dashboardRequestSuccess = (dispatch, account) => {
   return dispatch => {
     dispatch({
       type: FETCH_DASHBOARD_FULFILLED,
-      payload: vehicles
+      payload: account
     });
   };
 };

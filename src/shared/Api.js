@@ -82,6 +82,11 @@ export default class Api {
     });
   }
 
+  static async account() {
+    let res = await Api.getListResource("/accounts", {}, (requireAuth = true));
+    return res;
+  }
+
   static async getListResource(resource, params = {}, requireAuth = false) {
     let endpoint = resource;
     return Api.fetchResource("GET", endpoint, params, requireAuth);

@@ -1,7 +1,7 @@
 import {
-  FETCH_DASHBOARD_LOADING,
-  FETCH_DASHBOARD_FULFILLED,
-  FETCH_DASHBOARD_ERROR
+  FETCH_ACCOUNT_LOADING,
+  FETCH_ACCOUNT_FULFILLED,
+  FETCH_ACCOUNT_ERROR
 } from "@actions/types";
 
 const initialState = {
@@ -10,17 +10,17 @@ const initialState = {
   error: null
 };
 
-export const dashboard = (state = initialState, action) => {
+export const account = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_DASHBOARD_LOADING: {
+    case FETCH_ACCOUNT_LOADING: {
       return { ...state, isFetching: true };
       break;
     }
-    case FETCH_DASHBOARD_FULFILLED: {
-      return { ...state, isFetching: false, account: action.payload };
+    case FETCH_ACCOUNT_FULFILLED: {
+      return { ...state, isFetching: false, accounts: action.payload };
       break;
     }
-    case FETCH_DASHBOARD_ERROR: {
+    case FETCH_ACCOUNT_ERROR: {
       return { ...state, isFetching: false, error: action.payload };
       break;
     }
