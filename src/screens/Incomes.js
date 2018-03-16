@@ -80,7 +80,6 @@ function incomesTemplate(locals) {
       <View style={{ padding: 10 }}>
         {locals.inputs.date}
         {locals.inputs.categoryId}
-        {locals.inputs.typeId}
         {locals.inputs.accountId}
         {locals.inputs.description}
       </View>
@@ -108,10 +107,7 @@ const formOptions = {
       label: "Conta/Cartão",
       nullOption: { value: "", text: "Selecionar Conta" }
     },
-    typeId: {
-      label: "Tipo de Lançamento",
-      nullOption: { value: "", text: "Selecionar Tipo de Lançamento" }
-    },
+
     description: {
       label: "Descrição"
     }
@@ -165,20 +161,13 @@ class Incomes extends React.Component {
       return acc;
     }, {});
 
-    let typesData = (this.props.typeOccurrences || []).reduce((acc, row) => {
-      acc[row.id] = row.name;
-      return acc;
-    }, {});
-
     let Accounts = t.enums(accountsData, "Accounts");
     let Categories = t.enums(categoriesData, "Categories");
-    let TypeOccurrences = t.enums(typesData, "TypeOccurrences");
     var IncomesForm = t.struct({
       amount: t.Number,
       date: t.Date,
       accountId: Accounts,
       categoryId: Categories,
-      typeId: TypeOccurrences,
       description: t.String
     });
     return (
@@ -209,7 +198,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const select = ({ occurrence, account, category, typeOccurrence }) => {
+const select = ({ occurrence, account, category }) => {
   let { isFetching } = occurrence;
   let { accounts } = account;
   let { categories } = category;

@@ -53,27 +53,26 @@ class Dashboard extends React.Component {
 
   renderFabButton = () => {
     let { typeOccurrences } = this.props;
+    console.log(typeOccurrences);
     return typeOccurrences.map(occurrence => {
       return (
-        <View>
-          <ActionButton.Item
-            buttonColor={
-              occurrence.name == "Receita" ? Colors.primaryColor : "#ff5a50"
-            }
-            title={occurrence.name}
-            onPress={() =>
-              occurrence.name == "Receita"
-                ? this.props.navigation.navigate("Incomes", {
-                    typeId: occurrence.id
-                  })
-                : this.props.navigation.navigate("Expenses", {
-                    typeId: occurrence.id
-                  })
-            }
-          >
-            <Icon name="add" color={"#fff"} />
-          </ActionButton.Item>
-        </View>
+        <ActionButton.Item
+          buttonColor={
+            occurrence.name == "Receita" ? Colors.primaryColor : "#ff5a50"
+          }
+          title={occurrence.name}
+          onPress={() =>
+            occurrence.name == "Receita"
+              ? this.props.navigation.navigate("Incomes", {
+                  typeId: occurrence.id
+                })
+              : this.props.navigation.navigate("Expenses", {
+                  typeId: occurrence.id
+                })
+          }
+        >
+          <Icon name="add" color={"#fff"} />
+        </ActionButton.Item>
       );
     });
   };
@@ -90,20 +89,7 @@ class Dashboard extends React.Component {
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
         <ActionButton size={45} buttonColor="#ff5a50">
-          <ActionButton.Item
-            buttonColor={Colors.primaryColor}
-            title="receita"
-            onPress={() => this.props.navigation.navigate("Incomes")}
-          >
-            <Icon name="add" color={"#fff"} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#ff5a50"
-            title="despesa"
-            onPress={() => this.props.navigation.navigate("Expenses")}
-          >
-            <Icon name="add" color={"#fff"} />
-          </ActionButton.Item>
+          {this.renderFabButton()}
         </ActionButton>
       </StyledContainerView>
     );
