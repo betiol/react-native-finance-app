@@ -107,25 +107,17 @@ export default class Api {
     return res;
   }
 
-  static async occurrences({
-    date,
-    amount,
-    accountId,
-    categoryId,
-    description,
-    typeId,
-    status
-  }) {
+  static async occurrences(occurrence) {
+    console.log("api", occurrence);
     let endpoint = "/occurrences";
-    return Api.fetchResource("POST", endpoint, {
-      date,
-      amount,
-      accountId,
-      categoryId,
-      description,
-      typeId,
-      status
-    });
+    return Api.fetchResource(
+      "POST",
+      endpoint,
+      {
+        occurrence
+      },
+      true
+    );
   }
 
   static async getListResource(resource, params = {}, requireAuth = false) {

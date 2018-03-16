@@ -1,5 +1,5 @@
 import {
-  REQUEST_OCURRENCES_LOADING,
+  REQUEST_OCCURRENCE_LOADING,
   REQUEST_OCCURRENCES_SUCCESS,
   REQUEST_OCCURRENCES_ERROR,
   FETCH_OCCURRENCES_LOADING
@@ -7,27 +7,11 @@ import {
 import Api from "@shared/Api";
 
 export const requestOccurrence = occurrence => {
-  let {
-    date,
-    amount,
-    accountId,
-    categoryId,
-    description,
-    typeId,
-    status
-  } = occurrence;
   return async dispatch => {
-    dispatch({ type: REQUEST_OCURRENCES_LOADING });
+    dispatch({ type: REQUEST_OCCURRENCE_LOADING });
     try {
-      let occurrences = await Api.occurrences(
-        date,
-        amount,
-        accountId,
-        categoryId,
-        description,
-        typeId,
-        status
-      );
+      let occurrences = await Api.occurrences(occurrence);
+      console.log("occurrence", occurrence);
       dispatch(occurrenceRequestSuccess(dispatch, occurrences));
     } catch (err) {
       dispatch(occurrenceRequestError(err));

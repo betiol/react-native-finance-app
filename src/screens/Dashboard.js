@@ -11,6 +11,8 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import { RenderDrawerMenu } from "@components/DrawerUtils";
 import { Icon, Card, Avatar } from "react-native-elements";
 import { requestAccounts } from "@actions/account";
+import { requestTypes } from "@actions/typeOccurrence";
+
 import {
   StyledContainerView,
   TextAmount,
@@ -26,6 +28,7 @@ class Dashboard extends React.Component {
 
   componentDidMount = async () => {
     await this.props.requestAccounts();
+    await this.props.requestTypes();
   };
 
   renderAccount = () => {
@@ -48,8 +51,35 @@ class Dashboard extends React.Component {
     });
   };
 
+  renderFabButton = () => {
+    let { typeOccurrences } = this.props;
+    return typeOccurrences.map(occurrence => {
+      return (
+        <View>
+          <ActionButton.Item
+            buttonColor={
+              occurrence.name == "Receita" ? Colors.primaryColor : "#ff5a50"
+            }
+            title={occurrence.name}
+            onPress={() =>
+              occurrence.name == "Receita"
+                ? this.props.navigation.navigate("Incomes", {
+                    typeId: occurrence.id
+                  })
+                : this.props.navigation.navigate("Expenses", {
+                    typeId: occurrence.id
+                  })
+            }
+          >
+            <Icon name="add" color={"#fff"} />
+          </ActionButton.Item>
+        </View>
+      );
+    });
+  };
+
   render() {
-    let { isFetching } = this.props;
+    let { isFetching, typeOccurrences } = this.props;
     {
       isFetching && <LoadingSpinner isVisible={isFetching} />;
     }
@@ -70,7 +100,7 @@ class Dashboard extends React.Component {
           <ActionButton.Item
             buttonColor="#ff5a50"
             title="despesa"
-            onPress={() => {}}
+            onPress={() => this.props.navigation.navigate("Expenses")}
           >
             <Icon name="add" color={"#fff"} />
           </ActionButton.Item>
@@ -101,9 +131,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const select = ({ account }) => {
+const select = ({ account, typeOccurrence }) => {
   const { isFetching, accounts } = account;
-  return { isFetching, accounts };
+  const { typeOccurrences } = typeOccurrence;
+  return { isFetching, accounts, typeOccurrences };
 };
 
-export default connect(select, { requestAccounts })(Dashboard);
+export default connect(select, { requestAccounts, requestTypes })(Dashboard);

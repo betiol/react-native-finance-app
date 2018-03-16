@@ -5,7 +5,6 @@ import t from "tcomb-form-native";
 import { requestOccurrence } from "@actions/occurrence";
 import { requestCategories } from "@actions/category";
 import { requestAccounts } from "@actions/account";
-import { requestTypes } from "@actions/typeOccurrence";
 import _ from "lodash";
 import moment from "moment";
 import { Icon } from "react-native-elements";
@@ -17,11 +16,17 @@ var Form = t.form.Form;
 
 const amountStyle = _.cloneDeep(t.form.Form.stylesheet);
 amountStyle.textbox.normal.fontSize = 50;
+amountStyle.textbox.error.fontSize = 50;
 amountStyle.textbox.normal.color = "#fff";
 amountStyle.textbox.normal.borderWidth = 0;
 amountStyle.textbox.normal.height = 120;
 amountStyle.textbox.normal.width = width;
 amountStyle.textbox.normal.textAlign = "right";
+amountStyle.textbox.error.borderWidth = 0;
+amountStyle.textbox.error.height = 120;
+amountStyle.textbox.error.width = width;
+amountStyle.textbox.error.textAlign = "right";
+amountStyle.textbox.error.color = "#fff";
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 stylesheet.textbox.normal.marginBottom = 0;
@@ -129,21 +134,23 @@ class Incomes extends React.Component {
   componentDidMount = async () => {
     await this.props.requestAccounts();
     await this.props.requestCategories();
-    await this.props.requestTypes();
   };
 
   handleIncome = async () => {
     let value = this.refs.form.getValue();
-    let { amount, date, accountId, categoryId, typeId, description } = value;
+    let { typeId } = this.props.navigation.state.params;
+    let { amount, date, accountId, categoryId, description } = value;
     if (value) {
-      await this.props.requestOccurrence(
+      console.log(value);
+      let occurrence = {
         amount,
         date,
-        accountId,
-        categoryId,
-        typeId,
+        account_id: accountId,
+        category_id: categoryId,
+        type_id: typeId,
         description
-      );
+      };
+      await this.props.requestOccurrence(occurrence);
     }
   };
 
@@ -206,13 +213,11 @@ const select = ({ occurrence, account, category, typeOccurrence }) => {
   let { isFetching } = occurrence;
   let { accounts } = account;
   let { categories } = category;
-  let { typeOccurrences } = typeOccurrence;
-  return { isFetching, accounts, categories, typeOccurrences };
+  return { isFetching, accounts, categories };
 };
 
 export default connect(select, {
   requestOccurrence,
   requestAccounts,
-  requestCategories,
-  requestTypes
+  requestCategories
 })(Incomes);
