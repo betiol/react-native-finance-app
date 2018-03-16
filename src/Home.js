@@ -21,7 +21,6 @@ const CustomDrawerContentComponent = ({
     props.screenProps.onUserUpdate && props.screenProps.onUserUpdate(null);
   };
   const { user } = props.screenProps;
-  console.log(user);
   return (
     <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, flex: 5 }}>
       <View style={styles.drawerHeader}>
@@ -66,7 +65,7 @@ const CustomDrawerContentComponent = ({
 
 export default DrawerNavigator(
   {
-    Dashboard: { screen: require("@screens/dashboard").default }
+    Dashboard: { screen: require("@screens").default }
   },
   {
     initialRouteName: "Dashboard",

@@ -5,7 +5,7 @@ import {
 } from "./types";
 import Api from "@shared/Api";
 
-export const requestAccount = () => {
+export const requestAccounts = () => {
   return async dispatch => {
     dispatch({ type: FETCH_ACCOUNT_LOADING });
     try {

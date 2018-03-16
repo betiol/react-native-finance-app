@@ -10,12 +10,13 @@ import Colors from "@shared/Colors";
 import LoadingSpinner from "@components/LoadingSpinner";
 import { RenderDrawerMenu } from "@components/DrawerUtils";
 import { Icon, Card, Avatar } from "react-native-elements";
-import { requestAccount } from "@actions/account";
+import { requestAccounts } from "@actions/account";
 import {
   StyledContainerView,
   TextAmount,
   ContainerRowWithSpaceBetween
 } from "@shared/Styled";
+import ActionButton from "react-native-action-button";
 
 class Dashboard extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -24,7 +25,7 @@ class Dashboard extends React.Component {
   });
 
   componentDidMount = async () => {
-    await this.props.requestAccount();
+    await this.props.requestAccounts();
   };
 
   renderAccount = () => {
@@ -58,6 +59,22 @@ class Dashboard extends React.Component {
           <TextAmount>{"R$ 350,06"}</TextAmount>
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
+        <ActionButton size={45} buttonColor="#ff5a50">
+          <ActionButton.Item
+            buttonColor={Colors.primaryColor}
+            title="receita"
+            onPress={() => this.props.navigation.navigate("Incomes")}
+          >
+            <Icon name="add" color={"#fff"} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#ff5a50"
+            title="despesa"
+            onPress={() => {}}
+          >
+            <Icon name="add" color={"#fff"} />
+          </ActionButton.Item>
+        </ActionButton>
       </StyledContainerView>
     );
   }
@@ -78,6 +95,9 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     color: "#3498db",
     fontWeight: "bold"
+  },
+  actionButtonIcon: {
+    color: "#fff"
   }
 });
 
@@ -86,4 +106,4 @@ const select = ({ account }) => {
   return { isFetching, accounts };
 };
 
-export default connect(select, { requestAccount })(Dashboard);
+export default connect(select, { requestAccounts })(Dashboard);

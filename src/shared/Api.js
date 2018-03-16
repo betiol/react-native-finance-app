@@ -1,7 +1,7 @@
 import UserStorage from "@shared/UserStorage";
 const { stringify } = require("querystring");
 
-const BASE_URL = "https://finaceapi.herokuapp.com/v1";
+const BASE_URL = "https://api-financial.herokuapp.com/v1";
 export class ValidationError extends Error {
   constructor(message, validationErrors) {
     super(message);
@@ -81,6 +81,51 @@ export default class Api {
   static async account() {
     let res = await Api.getListResource("/accounts", {}, (requireAuth = true));
     return res;
+  }
+
+  static async fetchOccurrences() {
+    let res = await Api.getListResource(
+      "/occurrences",
+      {},
+      (requireAuth = true)
+    );
+    return res;
+  }
+
+  static async categories() {
+    let res = await Api.getListResource(
+      "/categories",
+      {},
+      (requireAuth = true)
+    );
+    return res;
+  }
+
+  static async typeOccurrences() {
+    let res = await Api.getListResource("/types", {}, (requireAuth = true));
+    console.log("RESSS", res);
+    return res;
+  }
+
+  static async occurrences({
+    date,
+    amount,
+    accountId,
+    categoryId,
+    description,
+    typeId,
+    status
+  }) {
+    let endpoint = "/occurrences";
+    return Api.fetchResource("POST", endpoint, {
+      date,
+      amount,
+      accountId,
+      categoryId,
+      description,
+      typeId,
+      status
+    });
   }
 
   static async getListResource(resource, params = {}, requireAuth = false) {

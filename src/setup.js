@@ -21,6 +21,6 @@ const Root = () => {
 };
 
 export default function setup() {
-  console.disableYellowBox = true;
+  // console.disableYellowBox = true;
   return Root;
 }

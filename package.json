@@ -12,6 +12,7 @@
     "querystring": "^0.2.0",
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.2",
+    "react-native-action-button": "^2.8.4",
     "react-native-elements": "^0.19.0",
     "react-native-spinkit": "^1.1.1",
     "react-native-vector-icons": "^4.5.0",
