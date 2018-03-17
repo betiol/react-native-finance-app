@@ -6,7 +6,7 @@ export default {
   statusBarColor: "#212121",
   lightBackgroundColor: "white",
   darkBackgroundColor: "black",
-
+  redColor: "#ff5a50",
   lightText: "#5A5A5A",
   lighterText: "white",
 

@@ -57,6 +57,7 @@ class Dashboard extends React.Component {
     return typeOccurrences.map(occurrence => {
       return (
         <ActionButton.Item
+          key={occurrence.id}
           buttonColor={
             occurrence.name == "Receita" ? Colors.primaryColor : "#ff5a50"
           }
@@ -88,7 +89,7 @@ class Dashboard extends React.Component {
           <TextAmount>{"R$ 350,06"}</TextAmount>
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
-        <ActionButton size={45} buttonColor="#ff5a50">
+        <ActionButton size={45} buttonColor={Colors.redColor}>
           {this.renderFabButton()}
         </ActionButton>
       </StyledContainerView>

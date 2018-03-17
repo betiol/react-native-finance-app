@@ -16,7 +16,8 @@ export default function configureStore(callback) {
     store,
     {
       storage: AsyncStorage,
-      debounce: 10000
+      debounce: 10000,
+      blacklist: ["occurrence"]
     },
     (err, state) => {
       if (err) {

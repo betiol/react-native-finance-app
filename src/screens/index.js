@@ -3,13 +3,15 @@ import { StackNavigator } from "react-navigation";
 
 import Dashboard from "./Dashboard";
 import Incomes from "./Incomes";
+import Expenses from "./Expenses";
 
 import Colors from "@shared/Colors";
 
 export default StackNavigator(
   {
     Dashboard: { screen: Dashboard },
-    Incomes: { screen: Incomes }
+    Incomes: { screen: Incomes },
+    Expenses: { screen: Expenses }
   },
   {
     mode: "modal",

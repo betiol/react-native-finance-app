@@ -1,17 +1,29 @@
 import {
-  REQUEST_OCCURRENCE_LOADING,
-  REQUEST_OCCURRENCES_SUCCESS,
+  REQUEST_OCCURRENCE_INCOME_LOADING,
+  REQUEST_OCCURRENCE_EXPENSE_LOADING,
+  REQUEST_OCCURRENCES_FULFILLED,
   REQUEST_OCCURRENCES_ERROR,
   FETCH_OCCURRENCES_LOADING
 } from "./types";
 import Api from "@shared/Api";
 
-export const requestOccurrence = occurrence => {
+export const requestIncomeOccurrence = occurrence => {
   return async dispatch => {
-    dispatch({ type: REQUEST_OCCURRENCE_LOADING });
+    dispatch({ type: REQUEST_OCCURRENCE_INCOME_LOADING });
     try {
       let occurrences = await Api.occurrences(occurrence);
-      console.log("occurrence", occurrence);
+      dispatch(occurrenceRequestSuccess(dispatch, occurrences));
+    } catch (err) {
+      dispatch(occurrenceRequestError(err));
+    }
+  };
+};
+
+export const requestExpenseOccurrence = occurrence => {
+  return async dispatch => {
+    dispatch({ type: REQUEST_OCCURRENCE_EXPENSE_LOADING });
+    try {
+      let occurrences = await Api.occurrences(occurrence);
       dispatch(occurrenceRequestSuccess(dispatch, occurrences));
     } catch (err) {
       dispatch(occurrenceRequestError(err));
@@ -34,7 +46,7 @@ export const fetchOccurrences = () => {
 export const occurrenceRequestSuccess = (dispatch, occurrences) => {
   return dispatch => {
     dispatch({
-      type: REQUEST_OCCURRENCES_SUCCESS,
+      type: REQUEST_OCCURRENCES_FULFILLED,
       payload: occurrences
     });
   };

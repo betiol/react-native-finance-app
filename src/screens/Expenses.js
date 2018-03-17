@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Dimensions, TextInput, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import t from "tcomb-form-native";
-import { requestIncomeOccurrence } from "@actions/occurrence";
+import { requestExpenseOccurrence } from "@actions/occurrence";
 import { requestCategories } from "@actions/category";
 import { requestAccounts } from "@actions/account";
 import _ from "lodash";
@@ -71,7 +71,7 @@ function incomesTemplate(locals) {
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
-          backgroundColor: Colors.primaryColor,
+          backgroundColor: Colors.redColor,
           height: height / 4
         }}
       >
@@ -114,7 +114,7 @@ const formOptions = {
   }
 };
 
-class Incomes extends React.Component {
+class Expenses extends React.Component {
   static navigationOptions = {
     headerStyle: {
       position: "absolute",
@@ -132,7 +132,11 @@ class Incomes extends React.Component {
     await this.props.requestCategories();
   };
 
-  handleIncome = async () => {
+  goBack = () => {
+    this.props.navigation.goBack();
+  };
+
+  handleExpense = async () => {
     let value = this.refs.form.getValue();
     let { typeId } = this.props.navigation.state.params;
     let { amount, date, accountId, categoryId, description } = value;
@@ -145,18 +149,13 @@ class Incomes extends React.Component {
         type_id: typeId,
         description
       };
-      await this.props.requestIncomeOccurrence(occurrence);
+      await this.props.requestExpenseOccurrence(occurrence);
       this.goBack();
     }
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
-  };
-
   render() {
     let { loading } = this.props;
-    console.log(loading);
     let accountsData = (this.props.accounts || []).reduce((acc, row) => {
       acc[row.id] = row.name;
       return acc;
@@ -183,8 +182,8 @@ class Incomes extends React.Component {
           <Button
             medium
             loading={loading}
-            onPress={this.handleIncome}
-            backgroundColor={Colors.primaryColor}
+            onPress={this.handleExpense}
+            backgroundColor={Colors.redColor}
             iconRight={{ name: "check", size: 30 }}
           />
         </View>
@@ -211,7 +210,7 @@ const select = ({ occurrence, account, category }) => {
 };
 
 export default connect(select, {
-  requestIncomeOccurrence,
+  requestExpenseOccurrence,
   requestAccounts,
   requestCategories
-})(Incomes);
+})(Expenses);
