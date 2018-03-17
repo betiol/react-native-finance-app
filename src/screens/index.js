@@ -4,6 +4,7 @@ import { StackNavigator } from "react-navigation";
 import Dashboard from "./Dashboard";
 import Incomes from "./Incomes";
 import Expenses from "./Expenses";
+import Occurrences from "./Occurrences";
 
 import Colors from "@shared/Colors";
 
@@ -11,7 +12,8 @@ export default StackNavigator(
   {
     Dashboard: { screen: Dashboard },
     Incomes: { screen: Incomes },
-    Expenses: { screen: Expenses }
+    Expenses: { screen: Expenses },
+    Occurrences: { screen: Occurrences }
   },
   {
     mode: "modal",

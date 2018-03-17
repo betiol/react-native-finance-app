@@ -11,6 +11,7 @@ import { Icon, Button } from "react-native-elements";
 import Colors from "@shared/Colors";
 const { width, height } = Dimensions.get("window");
 import { OutlinedButtonPrimary, NoOutlineButton } from "@components/Button";
+import maskedInputTemplate from "@components/maskedInputTemplate";
 
 var Form = t.form.Form;
 
@@ -97,6 +98,7 @@ const formOptions = {
       keyboardType: "phone-pad",
       placeholder: "0,00",
       stylesheet: amountStyle,
+      type: "money",
       placeholderTextColor: "#fff"
     },
     categoryId: {
@@ -176,7 +178,7 @@ class Expenses extends React.Component {
       description: t.String
     });
     return (
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 2, backgroundColor: "#fff" }}>
         <Form ref="form" options={formOptions} type={IncomesForm} />
         <View style={styles.buttons}>
           <Button

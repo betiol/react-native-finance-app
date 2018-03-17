@@ -3770,7 +3770,7 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-moment@^2.21.0:
+moment@^2.19.1, moment@^2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
 
@@ -4359,6 +4359,13 @@ react-native-elements@^0.19.0:
     lodash.times "^4.3.2"
     opencollective "^1.0.3"
     prop-types "^15.5.8"
+
+react-native-masked-text@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/react-native-masked-text/-/react-native-masked-text-1.6.5.tgz#991b6701bacfff647d70b216ccbe1bc87af0b8b8"
+  dependencies:
+    moment "^2.19.1"
+    tinymask "^1.0.2"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
@@ -5311,6 +5318,10 @@ through@^2.3.6:
 time-stamp@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
+
+tinymask@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tinymask/-/tinymask-1.0.2.tgz#df3775a94087b0d3d056c256e8923c01b7ec0941"
 
 tmp@^0.0.33:
   version "0.0.33"
