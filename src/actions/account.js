@@ -1,5 +1,7 @@
 import {
   FETCH_ACCOUNT_LOADING,
+  FETCH_TOTAL_VALUE_LOADING,
+  FETCH_TOTAL_VALUE_FULFILLED,
   FETCH_ACCOUNT_FULFILLED,
   FETCH_ACCOUNT_ERROR
 } from "./types";
@@ -14,6 +16,27 @@ export const requestAccounts = () => {
     } catch (err) {
       dispatch(accountRequestError(err));
     }
+  };
+};
+
+export const requestTotalValue = () => {
+  return async dispatch => {
+    dispatch({ type: FETCH_TOTAL_VALUE_LOADING });
+    try {
+      let totalValue = await Api.dashboard();
+      dispatch(totalValueRequestSuccess(dispatch, totalValue));
+    } catch (err) {
+      dispatch(accountRequestError(err));
+    }
+  };
+};
+
+export const totalValueRequestSuccess = (dispatch, totalValue) => {
+  return dispatch => {
+    dispatch({
+      type: FETCH_TOTAL_VALUE_FULFILLED,
+      payload: totalValue.total
+    });
   };
 };
 

@@ -11,6 +11,8 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import { RenderDrawerMenu } from "@components/DrawerUtils";
 import { Icon, Card, Avatar } from "react-native-elements";
 import { requestAccounts } from "@actions/account";
+import { requestTotalValue } from "@actions/account";
+
 import { requestTypes } from "@actions/typeOccurrence";
 
 import {
@@ -29,6 +31,7 @@ class Dashboard extends React.Component {
   componentDidMount = async () => {
     await this.props.requestAccounts();
     await this.props.requestTypes();
+    this.props.requestTotalValue();
   };
 
   renderAccount = () => {
@@ -53,13 +56,12 @@ class Dashboard extends React.Component {
 
   renderFabButton = () => {
     let { typeOccurrences } = this.props;
-    console.log(typeOccurrences);
     return typeOccurrences.map(occurrence => {
       return (
         <ActionButton.Item
           key={occurrence.id}
           buttonColor={
-            occurrence.name == "Receita" ? Colors.primaryColor : "#ff5a50"
+            occurrence.name == "Receita" ? Colors.primaryColor : Colors.redColor
           }
           title={occurrence.name}
           onPress={() =>
@@ -79,14 +81,22 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    let { isFetching, typeOccurrences } = this.props;
+    let { isFetching, typeOccurrences, totalValue, loadingTotal } = this.props;
     {
-      isFetching && <LoadingSpinner isVisible={isFetching} />;
+      isFetching || (loadingTotal && <LoadingSpinner isVisible={isFetching} />);
     }
     return (
       <StyledContainerView>
-        <View style={styles.containerAccount}>
-          <TextAmount>{"R$ 350,06"}</TextAmount>
+        <View
+          style={[
+            styles.containerAccount,
+            {
+              backgroundColor:
+                totalValue >= 0 ? Colors.primaryColor : Colors.redColor
+            }
+          ]}
+        >
+          <TextAmount>R$ {totalValue}</TextAmount>
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
         <ActionButton size={45} buttonColor={Colors.redColor}>
@@ -105,8 +115,8 @@ const styles = StyleSheet.create({
 
   containerAccount: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: Colors.primaryColor
+    justifyContent: "center"
+    // backgroundColor: Colors.primaryColor
   },
   accountAmount: {
     paddingTop: 5,
@@ -119,9 +129,13 @@ const styles = StyleSheet.create({
 });
 
 const select = ({ account, typeOccurrence }) => {
-  const { isFetching, accounts } = account;
+  const { isFetching, accounts, totalValue, loadingTotal } = account;
   const { typeOccurrences } = typeOccurrence;
-  return { isFetching, accounts, typeOccurrences };
+  return { isFetching, accounts, typeOccurrences, totalValue, loadingTotal };
 };
 
-export default connect(select, { requestAccounts, requestTypes })(Dashboard);
+export default connect(select, {
+  requestAccounts,
+  requestTotalValue,
+  requestTypes
+})(Dashboard);

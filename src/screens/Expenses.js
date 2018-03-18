@@ -12,6 +12,7 @@ import Colors from "@shared/Colors";
 const { width, height } = Dimensions.get("window");
 import { OutlinedButtonPrimary, NoOutlineButton } from "@components/Button";
 import maskedInputTemplate from "@components/maskedInputTemplate";
+import { TextInputMask } from "react-native-masked-text";
 
 var Form = t.form.Form;
 
@@ -97,7 +98,9 @@ const formOptions = {
       auto: "none",
       keyboardType: "phone-pad",
       placeholder: "0,00",
+
       stylesheet: amountStyle,
+
       type: "money",
       placeholderTextColor: "#fff"
     },
@@ -143,6 +146,7 @@ class Expenses extends React.Component {
     let { typeId } = this.props.navigation.state.params;
     let { amount, date, accountId, categoryId, description } = value;
     if (value) {
+      console.log("value", value);
       let occurrence = {
         amount,
         date,
@@ -175,7 +179,7 @@ class Expenses extends React.Component {
       date: t.Date,
       accountId: Accounts,
       categoryId: Categories,
-      description: t.String
+      description: t.maybe(t.String)
     });
     return (
       <View style={{ flex: 2, backgroundColor: "#fff" }}>

@@ -23,7 +23,7 @@ export default StackNavigator(
       headerTintColor: Colors.lighterText,
       headerStyle: {
         position: "absolute",
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: "transparent",
         top: 0,
         left: 0,
         right: 0,

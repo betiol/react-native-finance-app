@@ -98,7 +98,7 @@ const formOptions = {
       keyboardType: "phone-pad",
       placeholder: "0,00",
       stylesheet: amountStyle,
-      template: maskedInputTemplate,
+      // template: maskedInputTemplate,
       type: "money",
       placeholderTextColor: "#fff"
     },
