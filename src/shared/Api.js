@@ -101,6 +101,11 @@ export default class Api {
     return res;
   }
 
+  static async dashboard() {
+    let res = await Api.getListResource("/dashboard", {}, (requireAuth = true));
+    return res;
+  }
+
   static async typeOccurrences() {
     let res = await Api.getListResource("/types", {}, (requireAuth = true));
     console.log("RESSS", res);

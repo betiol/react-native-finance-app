@@ -29,7 +29,7 @@ export const account = (state = initialState, action) => {
       break;
     }
     case FETCH_TOTAL_VALUE_LOADING: {
-      return { ...state, isFetching: true };
+      return { ...state, loadingTotal: true };
       break;
     }
     case FETCH_TOTAL_VALUE_FULFILLED: {

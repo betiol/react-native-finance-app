@@ -82,9 +82,10 @@ class Dashboard extends React.Component {
 
   render() {
     let { isFetching, typeOccurrences, totalValue, loadingTotal } = this.props;
-    {
-      isFetching || (loadingTotal && <LoadingSpinner isVisible={isFetching} />);
+    if (loadingTotal) {
+      return <LoadingSpinner isVisible={isFetching} />;
     }
+
     return (
       <StyledContainerView>
         <View
