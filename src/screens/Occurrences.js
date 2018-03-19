@@ -7,7 +7,12 @@ import Colors from "@shared/Colors";
 import moment from "moment";
 import { View, Text, ScrollView } from "react-native";
 import { connect } from "react-redux";
+import OccurrencesList from "@components/OccurrencesList";
 import _ from "lodash";
+import { ptBr } from "moment/locale/pt-br";
+
+moment.locale(ptBr);
+
 class Occurrences extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Lançamentos",
@@ -27,35 +32,27 @@ class Occurrences extends React.Component {
     }
   });
 
-  componentDidMount = async () => {
-    await this.props.fetchOccurrences();
+  componentDidMount = () => {
+    this.props.fetchOccurrences();
   };
 
   renderList = () => {
     let { occurrences } = this.props;
-
-    return (occurrences || []).map((o, i) => {
+    var groups = _.groupBy(occurrences, function(date) {
+      return moment(date.date)
+        .startOf("day")
+        .format();
+    });
+    var result = _.map(groups, function(group, day) {
+      return {
+        day: day,
+        occurrence: group
+      };
+    });
+    return result.map((r, idx) => {
+      console.log(r);
       return (
-        <View>
-          <ListItem
-            key={i}
-            title={o.description || o.category.name}
-            subtitle={o.category.name || ""}
-            rightIcon={
-              <View>
-                <Text>{o.amount}</Text>
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    color: o.status ? Colors.primaryColor : Colors.redColor
-                  }}
-                >
-                  {o.status ? "recebido" : "pago"}
-                </Text>
-              </View>
-            }
-          />
-        </View>
+        <OccurrencesList key={idx} date={r.day} occurrence={r.occurrence} />
       );
     });
   };

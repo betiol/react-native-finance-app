@@ -46,7 +46,9 @@ class Dashboard extends React.Component {
             <ContainerRowWithSpaceBetween>
               <Avatar small rounded title="BB" />
               <Text style={{ paddingTop: 5 }}>{acc.name}</Text>
-              <Text style={styles.accountAmount}>R$ {acc.amount}</Text>
+              <Text style={styles.accountAmount}>
+                R$ {acc.amount.toFixed(2).replace(".", ",")}
+              </Text>
             </ContainerRowWithSpaceBetween>
           </Card>
         </View>
@@ -82,9 +84,6 @@ class Dashboard extends React.Component {
 
   render() {
     let { isFetching, typeOccurrences, totalValue, loadingTotal } = this.props;
-    if (loadingTotal) {
-      return <LoadingSpinner isVisible={isFetching} />;
-    }
 
     return (
       <StyledContainerView>
@@ -97,7 +96,7 @@ class Dashboard extends React.Component {
             }
           ]}
         >
-          <TextAmount>R$ {totalValue}</TextAmount>
+          <TextAmount>R$ {totalValue.toFixed(2).replace(".", ",")}</TextAmount>
         </View>
         <View style={{ flex: 2 }}>{this.renderAccount()}</View>
         <ActionButton size={45} buttonColor={Colors.redColor}>

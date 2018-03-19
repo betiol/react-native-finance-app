@@ -98,8 +98,10 @@ const formOptions = {
       keyboardType: "phone-pad",
       placeholder: "0,00",
       stylesheet: amountStyle,
-      // template: maskedInputTemplate,
-      type: "money",
+      template: maskedInputTemplate,
+      config: {
+        type: "money"
+      },
       placeholderTextColor: "#fff"
     },
     categoryId: {
@@ -137,11 +139,13 @@ class Incomes extends React.Component {
 
   handleIncome = async () => {
     let value = this.refs.form.getValue();
+    console.log(value);
     let { typeId } = this.props.navigation.state.params;
     let { amount, date, accountId, categoryId, description } = value;
+    let amountFormatted = amount.replace("R$", "");
     if (value) {
       let occurrence = {
-        amount,
+        amount: amountFormatted,
         date,
         account_id: accountId,
         category_id: categoryId,
@@ -159,7 +163,6 @@ class Incomes extends React.Component {
 
   render() {
     let { loading } = this.props;
-    console.log(loading);
     let accountsData = (this.props.accounts || []).reduce((acc, row) => {
       acc[row.id] = row.name;
       return acc;
@@ -173,7 +176,7 @@ class Incomes extends React.Component {
     let Accounts = t.enums(accountsData, "Accounts");
     let Categories = t.enums(categoriesData, "Categories");
     var IncomesForm = t.struct({
-      amount: t.Number,
+      amount: t.String,
       date: t.Date,
       accountId: Accounts,
       categoryId: Categories,

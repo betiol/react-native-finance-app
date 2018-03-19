@@ -12,7 +12,6 @@ import Colors from "@shared/Colors";
 const { width, height } = Dimensions.get("window");
 import { OutlinedButtonPrimary, NoOutlineButton } from "@components/Button";
 import maskedInputTemplate from "@components/maskedInputTemplate";
-import { TextInputMask } from "react-native-masked-text";
 
 var Form = t.form.Form;
 
@@ -98,10 +97,11 @@ const formOptions = {
       auto: "none",
       keyboardType: "phone-pad",
       placeholder: "0,00",
-
       stylesheet: amountStyle,
-
-      type: "money",
+      template: maskedInputTemplate,
+      config: {
+        type: "money"
+      },
       placeholderTextColor: "#fff"
     },
     categoryId: {
@@ -137,27 +137,29 @@ class Expenses extends React.Component {
     await this.props.requestCategories();
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
-  };
-
   handleExpense = async () => {
     let value = this.refs.form.getValue();
+    console.log(value);
     let { typeId } = this.props.navigation.state.params;
     let { amount, date, accountId, categoryId, description } = value;
+    let amountFormatted = amount.replace("R$", "");
     if (value) {
-      console.log("value", value);
       let occurrence = {
-        amount,
+        amount: amountFormatted,
         date,
         account_id: accountId,
         category_id: categoryId,
         type_id: typeId,
         description
       };
+
       await this.props.requestExpenseOccurrence(occurrence);
       this.goBack();
     }
+  };
+
+  goBack = () => {
+    this.props.navigation.goBack();
   };
 
   render() {
@@ -174,16 +176,16 @@ class Expenses extends React.Component {
 
     let Accounts = t.enums(accountsData, "Accounts");
     let Categories = t.enums(categoriesData, "Categories");
-    var IncomesForm = t.struct({
-      amount: t.Number,
+    var ExpensesForm = t.struct({
+      amount: t.String,
       date: t.Date,
       accountId: Accounts,
       categoryId: Categories,
-      description: t.maybe(t.String)
+      description: t.String
     });
     return (
       <View style={{ flex: 2, backgroundColor: "#fff" }}>
-        <Form ref="form" options={formOptions} type={IncomesForm} />
+        <Form ref="form" options={formOptions} type={ExpensesForm} />
         <View style={styles.buttons}>
           <Button
             medium
