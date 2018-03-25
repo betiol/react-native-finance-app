@@ -109,8 +109,9 @@ class Transference extends React.Component {
 
   handleTransference = async () => {
     let value = this.refs.form.getValue();
-    console.log(value);
-    let { typeId } = this.props.navigation.state.params;
+    const transferId = this.props.typeOccurrences.filter(
+      t => t.name === "Transferencia"
+    )[0].id;
     let {
       amount,
       date,
@@ -127,7 +128,7 @@ class Transference extends React.Component {
         account_id: accountId,
         category_id: categoryId,
         account_debit: debitAccount,
-        type_id: typeId,
+        type_id: transferId,
         description
       };
 
@@ -230,11 +231,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const select = ({ occurrence, account, category }) => {
+const select = ({ occurrence, account, category, typeOccurrence }) => {
   let { loading } = occurrence;
   let { accounts } = account;
+  let { typeOccurrences } = typeOccurrence;
   let { categories } = category;
-  return { loading, accounts, categories };
+  return { loading, accounts, categories, typeOccurrences };
 };
 
 export default connect(select, {

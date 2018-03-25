@@ -5,7 +5,13 @@ import { fetchOccurrences, deleteOccurrence } from "@actions/occurrence";
 import { Icon, Card, Avatar, List, ListItem } from "react-native-elements";
 import Colors from "@shared/Colors";
 import moment from "moment";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl
+} from "react-native";
 import { connect } from "react-redux";
 import OccurrencesList from "@components/OccurrencesList";
 import _ from "lodash";
@@ -32,14 +38,27 @@ class Occurrences extends React.Component {
     }
   });
 
+  state = {
+    refreshing: false
+  };
+
   componentDidMount = () => {
+    this.fetchOccurrences();
+  };
+
+  fetchOccurrences = () => {
     this.props.fetchOccurrences();
   };
 
   delete = async id => {
     await this.props.deleteOccurrence(id);
-    await this.props.fetchOccurrences();
-    this.props.navigation.navigate("Dashboard");
+    await this.fetchOccurrences();
+  };
+
+  _onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.props.requestTotalValue();
+    this.setState({ refreshing: false });
   };
 
   renderList = () => {
@@ -70,10 +89,18 @@ class Occurrences extends React.Component {
     let { loading } = this.props;
 
     if (loading) {
-      return <ActivityIndicator color={Colors.primaryColor} size={"small"} />;
+      return <ActivityIndicator color={Colors.primaryColor} size={"large"} />;
     }
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+        contentContainerStyle={{ flex: 1, backgroundColor: "#fff" }}
+      >
         <View style={{ paddingTop: 40 }}>
           <List>{this.renderList()}</List>
         </View>
