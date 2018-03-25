@@ -12,7 +12,7 @@ import Colors from "@shared/Colors";
 const { width, height } = Dimensions.get("window");
 import { OutlinedButtonPrimary, NoOutlineButton } from "@components/Button";
 import maskedInputTemplate from "@components/maskedInputTemplate";
-
+import { requestTotalValue } from "@actions/account";
 var Form = t.form.Form;
 
 const amountStyle = _.cloneDeep(t.form.Form.stylesheet);
@@ -88,37 +88,6 @@ function incomesTemplate(locals) {
   );
 }
 
-const formOptions = {
-  stylesheet: stylesheet,
-  template: incomesTemplate,
-  fields: {
-    date: effectiveDate,
-    amount: {
-      auto: "none",
-      keyboardType: "phone-pad",
-      placeholder: "0,00",
-      stylesheet: amountStyle,
-      template: maskedInputTemplate,
-      config: {
-        type: "money"
-      },
-      placeholderTextColor: "#fff"
-    },
-    categoryId: {
-      label: "Categoria",
-      nullOption: { value: "", text: "Selecionar Categoria" }
-    },
-    accountId: {
-      label: "Conta/Cartão",
-      nullOption: { value: "", text: "Selecionar Conta" }
-    },
-
-    description: {
-      label: "Descrição"
-    }
-  }
-};
-
 class Expenses extends React.Component {
   static navigationOptions = {
     headerStyle: {
@@ -139,17 +108,18 @@ class Expenses extends React.Component {
 
   handleExpense = async () => {
     let value = this.refs.form.getValue();
-    console.log(value);
-    let { typeId } = this.props.navigation.state.params;
     let { amount, date, accountId, categoryId, description } = value;
     let amountFormatted = amount.replace("R$", "");
+    let expenseId = this.props.typeOccurrences.filter(
+      type => type.name === "Despesa"
+    )[0].id;
     if (value) {
       let occurrence = {
         amount: amountFormatted,
         date,
         account_id: accountId,
         category_id: categoryId,
-        type_id: typeId,
+        type_id: expenseId,
         description
       };
 
@@ -158,11 +128,47 @@ class Expenses extends React.Component {
     }
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
+  goBack = async () => {
+    this.props.navigation.navigate("Dashboard", {
+      onGoBack: () => this.props.requestTotalValue()
+    });
   };
 
   render() {
+    const formOptions = {
+      stylesheet: stylesheet,
+      template: incomesTemplate,
+      fields: {
+        date: effectiveDate,
+        amount: {
+          auto: "none",
+          editable: !loading,
+          keyboardType: "phone-pad",
+          placeholder: "0,00",
+          stylesheet: amountStyle,
+          template: maskedInputTemplate,
+          config: {
+            type: "money"
+          },
+          placeholderTextColor: "#fff"
+        },
+        categoryId: {
+          label: "Categoria",
+          editable: !loading,
+          nullOption: { value: "", text: "Selecionar Categoria" }
+        },
+        accountId: {
+          label: "Conta/Cartão",
+          editable: !loading,
+          nullOption: { value: "", text: "Selecionar Conta" }
+        },
+
+        description: {
+          editable: !loading,
+          label: "Descrição"
+        }
+      }
+    };
     let { loading } = this.props;
     let accountsData = (this.props.accounts || []).reduce((acc, row) => {
       acc[row.id] = row.name;
@@ -181,7 +187,7 @@ class Expenses extends React.Component {
       date: t.Date,
       accountId: Accounts,
       categoryId: Categories,
-      description: t.String
+      description: t.maybe(t.String)
     });
     return (
       <View style={{ flex: 2, backgroundColor: "#fff" }}>
@@ -210,15 +216,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const select = ({ occurrence, account, category }) => {
+const select = ({ occurrence, account, category, typeOccurrence }) => {
   let { loading } = occurrence;
   let { accounts } = account;
   let { categories } = category;
-  return { loading, accounts, categories };
+  let { typeOccurrences } = typeOccurrence;
+  return { loading, accounts, categories, typeOccurrences };
 };
 
 export default connect(select, {
   requestExpenseOccurrence,
   requestAccounts,
-  requestCategories
+  requestCategories,
+  requestTotalValue
 })(Expenses);

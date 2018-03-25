@@ -17,15 +17,12 @@ export default class LoadingSpinner extends Component {
   props: Props;
 
   render() {
-    if (!this.props.isVisible) {
-      return null;
-    }
     return (
       <View style={styles.spinner}>
         <Spinner
           size={this.props.size || 80}
           type={"Wave"}
-          color={this.props.color || Colors.primaryColor}
+          color={this.props.color}
         />
         <Text style={{ color: Colors.lighterText }}>{this.props.message}</Text>
       </View>
@@ -35,6 +32,7 @@ export default class LoadingSpinner extends Component {
 
 const styles = StyleSheet.create({
   spinner: {
+    flex: 1,
     justifyContent: "center",
     alignSelf: "stretch",
     alignItems: "center"

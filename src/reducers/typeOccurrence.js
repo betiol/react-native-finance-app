@@ -11,7 +11,6 @@ const initialState = {
 };
 
 export const typeOccurrence = (state = initialState, action) => {
-  console.log("action", action);
   switch (action.type) {
     case FETCH_TYPES_OCCURRENCES_LOADING: {
       return { ...state, isFetching: true };

@@ -1,11 +1,11 @@
 import React from "react";
 import { RenderDrawerMenu } from "@components/DrawerUtils";
 import LoadingSpinner from "@components/LoadingSpinner";
-import { fetchOccurrences } from "@actions/occurrence";
+import { fetchOccurrences, deleteOccurrence } from "@actions/occurrence";
 import { Icon, Card, Avatar, List, ListItem } from "react-native-elements";
 import Colors from "@shared/Colors";
 import moment from "moment";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import OccurrencesList from "@components/OccurrencesList";
 import _ from "lodash";
@@ -36,12 +36,16 @@ class Occurrences extends React.Component {
     this.props.fetchOccurrences();
   };
 
+  delete = async id => {
+    await this.props.deleteOccurrence(id);
+    await this.props.fetchOccurrences();
+    this.props.navigation.navigate("Dashboard");
+  };
+
   renderList = () => {
     let { occurrences } = this.props;
     var groups = _.groupBy(occurrences, function(date) {
-      return moment(date.date)
-        .startOf("day")
-        .format();
+      return moment(date.date).format();
     });
     var result = _.map(groups, function(group, day) {
       return {
@@ -50,22 +54,26 @@ class Occurrences extends React.Component {
       };
     });
     return result.map((r, idx) => {
-      console.log(r);
+      console.log("r", r);
       return (
-        <OccurrencesList key={idx} date={r.day} occurrence={r.occurrence} />
+        <OccurrencesList
+          press={id => this.delete(id)}
+          key={idx}
+          date={r.day}
+          occurrence={r.occurrence}
+        />
       );
     });
   };
 
   render() {
     let { loading } = this.props;
-    {
-      loading && (
-        <LoadingSpinner size={80} message="Carregando..." isVisible={loading} />
-      );
+
+    if (loading) {
+      return <ActivityIndicator color={Colors.primaryColor} size={"small"} />;
     }
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: "#fff" }}>
         <View style={{ paddingTop: 40 }}>
           <List>{this.renderList()}</List>
         </View>
@@ -75,8 +83,10 @@ class Occurrences extends React.Component {
 }
 
 const select = ({ occurrence }) => {
-  let { loading, occurrences } = occurrence;
-  return { loading, occurrences };
+  let { loading, deleteLoading, occurrences } = occurrence;
+  return { loading, occurrences, deleteLoading };
 };
 
-export default connect(select, { fetchOccurrences })(Occurrences);
+export default connect(select, { fetchOccurrences, deleteOccurrence })(
+  Occurrences
+);

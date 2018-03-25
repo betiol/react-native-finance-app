@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Dimensions, TextInput, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import t from "tcomb-form-native";
-import { requestIncomeOccurrence } from "@actions/occurrence";
+import { requestTransferOccurrence } from "@actions/occurrence";
 import { requestCategories } from "@actions/category";
 import { requestAccounts } from "@actions/account";
 import _ from "lodash";
@@ -12,7 +12,7 @@ import Colors from "@shared/Colors";
 const { width, height } = Dimensions.get("window");
 import { OutlinedButtonPrimary, NoOutlineButton } from "@components/Button";
 import maskedInputTemplate from "@components/maskedInputTemplate";
-
+import { requestTotalValue } from "@actions/account";
 var Form = t.form.Form;
 
 const amountStyle = _.cloneDeep(t.form.Form.stylesheet);
@@ -64,7 +64,7 @@ const effectiveDate = {
   }
 };
 
-function incomesTemplate(locals) {
+function transferenceTemplate(locals) {
   return (
     <View>
       <View
@@ -72,7 +72,7 @@ function incomesTemplate(locals) {
           justifyContent: "center",
           alignContent: "center",
           alignItems: "center",
-          backgroundColor: Colors.primaryColor,
+          backgroundColor: Colors.terciaryColor,
           height: height / 4
         }}
       >
@@ -80,46 +80,16 @@ function incomesTemplate(locals) {
       </View>
       <View style={{ padding: 10 }}>
         {locals.inputs.date}
-        {locals.inputs.categoryId}
         {locals.inputs.accountId}
+        {locals.inputs.debitAccount}
+        {locals.inputs.categoryId}
         {locals.inputs.description}
       </View>
     </View>
   );
 }
 
-const formOptions = {
-  stylesheet: stylesheet,
-  template: incomesTemplate,
-  fields: {
-    date: effectiveDate,
-    amount: {
-      auto: "none",
-      keyboardType: "phone-pad",
-      placeholder: "0,00",
-      stylesheet: amountStyle,
-      template: maskedInputTemplate,
-      config: {
-        type: "money"
-      },
-      placeholderTextColor: "#fff"
-    },
-    categoryId: {
-      label: "Categoria",
-      nullOption: { value: "", text: "Selecionar Categoria" }
-    },
-    accountId: {
-      label: "Conta/Cartão",
-      nullOption: { value: "", text: "Selecionar Conta" }
-    },
-
-    description: {
-      label: "Descrição"
-    }
-  }
-};
-
-class Incomes extends React.Component {
+class Transference extends React.Component {
   static navigationOptions = {
     headerStyle: {
       position: "absolute",
@@ -137,13 +107,18 @@ class Incomes extends React.Component {
     await this.props.requestCategories();
   };
 
-  handleIncome = async () => {
+  handleTransference = async () => {
     let value = this.refs.form.getValue();
-    const incomesId = this.props.typeOccurrences.filter(
-      t => t.name === "Receita"
-    )[0].id;
-
-    let { amount, date, accountId, categoryId, description } = value;
+    console.log(value);
+    let { typeId } = this.props.navigation.state.params;
+    let {
+      amount,
+      date,
+      accountId,
+      categoryId,
+      debitAccount,
+      description
+    } = value;
     let amountFormatted = amount.replace("R$", "");
     if (value) {
       let occurrence = {
@@ -151,19 +126,62 @@ class Incomes extends React.Component {
         date,
         account_id: accountId,
         category_id: categoryId,
-        type_id: incomesId,
+        account_debit: debitAccount,
+        type_id: typeId,
         description
       };
-      await this.props.requestIncomeOccurrence(occurrence);
+
+      await this.props.requestTransferOccurrence(occurrence);
       this.goBack();
     }
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
+  goBack = async () => {
+    this.props.navigation.navigate("Dashboard", {
+      onGoBack: () => this.props.requestTotalValue()
+    });
   };
 
   render() {
+    const formOptions = {
+      stylesheet: stylesheet,
+      template: transferenceTemplate,
+      fields: {
+        date: effectiveDate,
+        amount: {
+          auto: "none",
+          editable: !loading,
+          keyboardType: "phone-pad",
+          placeholder: "0,00",
+          stylesheet: amountStyle,
+          template: maskedInputTemplate,
+          config: {
+            type: "money"
+          },
+          placeholderTextColor: "#fff"
+        },
+        categoryId: {
+          label: "Categoria",
+          editable: !loading,
+          nullOption: { value: "", text: "Selecionar Categoria" }
+        },
+        accountId: {
+          label: "Conta Origem",
+          editable: !loading,
+          nullOption: { value: "", text: "Selecionar Conta" }
+        },
+        debitAccount: {
+          label: "Conta Destino",
+          editable: !loading,
+          nullOption: { value: "", text: "Selecionar Conta" }
+        },
+
+        description: {
+          editable: !loading,
+          label: "Descrição"
+        }
+      }
+    };
     let { loading } = this.props;
     let accountsData = (this.props.accounts || []).reduce((acc, row) => {
       acc[row.id] = row.name;
@@ -177,22 +195,23 @@ class Incomes extends React.Component {
 
     let Accounts = t.enums(accountsData, "Accounts");
     let Categories = t.enums(categoriesData, "Categories");
-    var IncomesForm = t.struct({
+    var ExpensesForm = t.struct({
       amount: t.String,
       date: t.Date,
       accountId: Accounts,
+      debitAccount: Accounts,
       categoryId: Categories,
-      description: t.maybe(t.String)
+      description: t.String
     });
     return (
       <View style={{ flex: 2, backgroundColor: "#fff" }}>
-        <Form ref="form" options={formOptions} type={IncomesForm} />
+        <Form ref="form" options={formOptions} type={ExpensesForm} />
         <View style={styles.buttons}>
           <Button
             medium
             loading={loading}
-            onPress={this.handleIncome}
-            backgroundColor={Colors.primaryColor}
+            onPress={this.handleTransference}
+            backgroundColor={Colors.terciaryColor}
             iconRight={{ name: "check", size: 30 }}
           />
         </View>
@@ -211,16 +230,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const select = ({ occurrence, account, category, typeOccurrence }) => {
+const select = ({ occurrence, account, category }) => {
   let { loading } = occurrence;
-  let { typeOccurrences } = typeOccurrence;
   let { accounts } = account;
   let { categories } = category;
-  return { loading, accounts, categories, typeOccurrences };
+  return { loading, accounts, categories };
 };
 
 export default connect(select, {
-  requestIncomeOccurrence,
+  requestTransferOccurrence,
   requestAccounts,
-  requestCategories
-})(Incomes);
+  requestCategories,
+  requestTotalValue
+})(Transference);

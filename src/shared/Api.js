@@ -2,6 +2,7 @@ import UserStorage from "@shared/UserStorage";
 const { stringify } = require("querystring");
 
 const BASE_URL = "https://api-financial.herokuapp.com/v1";
+// const BASE_URL = "http://192.168.1.8:3000/v1";
 export class ValidationError extends Error {
   constructor(message, validationErrors) {
     super(message);
@@ -83,6 +84,16 @@ export default class Api {
     return res;
   }
 
+  static async deleteOccurrence(id) {
+    let res = await Api.fetchResource(
+      "DELETE",
+      `/occurrences/${id}`,
+      {},
+      (requireAuth = true)
+    );
+    return res;
+  }
+
   static async fetchOccurrences() {
     let res = await Api.getListResource(
       "/occurrences",
@@ -115,6 +126,19 @@ export default class Api {
   static async occurrences(occurrence) {
     console.log("api", occurrence);
     let endpoint = "/occurrences";
+    return Api.fetchResource(
+      "POST",
+      endpoint,
+      {
+        occurrence
+      },
+      true
+    );
+  }
+
+  static async transference(occurrence) {
+    console.log("api", occurrence);
+    let endpoint = "/occurrences/transfer";
     return Api.fetchResource(
       "POST",
       endpoint,

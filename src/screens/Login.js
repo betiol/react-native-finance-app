@@ -195,11 +195,13 @@ export class Login extends Component {
             value={formValue}
             onChange={this.onChangeForm}
           />
-          <LoadingSpinner
-            size={80}
-            message="Autenticando..."
-            isVisible={isFetching}
-          />
+          {isFetching && (
+            <LoadingSpinner
+              color={"#fff"}
+              size={80}
+              message="Autenticando..."
+            />
+          )}
         </View>
         {this.state.error && (
           <Text style={styles.errorMessage}>{this.state.error.message}</Text>

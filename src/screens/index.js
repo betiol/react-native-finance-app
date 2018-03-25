@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Incomes from "./Incomes";
 import Expenses from "./Expenses";
 import Occurrences from "./Occurrences";
+import Transference from "./Transference";
 
 import Colors from "@shared/Colors";
 
@@ -13,7 +14,8 @@ export default StackNavigator(
     Dashboard: { screen: Dashboard },
     Incomes: { screen: Incomes },
     Expenses: { screen: Expenses },
-    Occurrences: { screen: Occurrences }
+    Occurrences: { screen: Occurrences },
+    Transference: { screen: Transference }
   },
   {
     mode: "modal",

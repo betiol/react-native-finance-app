@@ -9,7 +9,8 @@ export default {
   redColor: "#ff5a50",
   lightText: "#5A5A5A",
   lighterText: "white",
-
+  orangeColor: "#fff200",
+  blueColor: "#17c0eb",
   darkText: "#4d4d4d",
   darkerText: "black",
 
