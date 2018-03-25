@@ -1,9 +1,10 @@
 # MY FINANCE APP
 
-![](https://image.ibb.co/jWPjpc/rsz_login.png)
-![](https://image.ibb.co/deHthx/rsz_1menu.png)
-![](https://image.ibb.co/kXaqUc/rsz_dash.png)
-![](https://image.ibb.co/dXWKNx/rsz_add_occurrence.png)
+![](https://image.ibb.co/kMqkc7/login.png)
+![](https://image.ibb.co/nsthPn/drawer.png)
+![](https://image.ibb.co/gdQJx7/dashboard.png)
+![](https://image.ibb.co/j6z0AS/add.png)
+![](https://image.ibb.co/fHudx7/occurrences.png)
 
 I created this app for my personal finances use.
 
