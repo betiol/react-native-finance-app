@@ -147,6 +147,8 @@ android {
     }
 }
 
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 dependencies {
     compile project(':react-native-config')
     compile project(':react-native-spinkit')

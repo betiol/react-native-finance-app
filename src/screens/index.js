@@ -4,8 +4,11 @@ import { StackNavigator } from "react-navigation";
 import Dashboard from "./Dashboard";
 import Incomes from "./Incomes";
 import Expenses from "./Expenses";
-import Occurrences from "./Occurrences";
+// import Occurrences from "./Occurrences";
 import Transference from "./Transference";
+// import Settings from "./Settings";
+// import Accounts from "./Accounts";
+// import CreateAccount from "./CreateAccount";
 
 import Colors from "@shared/Colors";
 
@@ -14,8 +17,11 @@ export default StackNavigator(
     Dashboard: { screen: Dashboard },
     Incomes: { screen: Incomes },
     Expenses: { screen: Expenses },
-    Occurrences: { screen: Occurrences },
+    // Occurrences: { screen: Occurrences },
     Transference: { screen: Transference }
+    // Settings: { screen: Settings }
+    // Accounts: { screen: Accounts },
+    // CreateAccount: { screen: CreateAccount }
   },
   {
     mode: "modal",

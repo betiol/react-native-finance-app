@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
 import Colors from "@shared/Colors";
-
-export const StyledContainerView = styled.View`
+import { View } from "react-native";
+export const StyledContainerView = styled(View)`
   flex: 1;
+  background-color: #fff;
 `;
 
 export const TextAmount = styled.Text`

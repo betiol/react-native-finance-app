@@ -28,7 +28,7 @@ import {
   ContainerRowWithSpaceBetween
 } from "@shared/Styled";
 import ActionButton from "react-native-action-button";
-
+import AccountCard from "@components/AccountCard";
 const { height } = Dimensions.get("window");
 
 class Dashboard extends React.Component {
@@ -60,30 +60,7 @@ class Dashboard extends React.Component {
   renderAccount = () => {
     let { accounts } = this.props;
     return (accounts || []).map(acc => {
-      return (
-        <View key={acc.id}>
-          <Card>
-            <Text style={{ paddingBottom: 5, color: Colors.terciaryColor }}>
-              Contas
-            </Text>
-            <ContainerRowWithSpaceBetween>
-              <Avatar small rounded title="BB" />
-              <Text style={{ paddingTop: 5 }}>{acc.name}</Text>
-              <Text
-                style={[
-                  styles.accountAmount,
-                  {
-                    color:
-                      acc.amount > 0 ? Colors.primaryColor : Colors.redColor
-                  }
-                ]}
-              >
-                R$ {acc.amount}
-              </Text>
-            </ContainerRowWithSpaceBetween>
-          </Card>
-        </View>
-      );
+      return <AccountCard key={acc.id} name={acc.name} amount={acc.amount} />;
     });
   };
 
@@ -192,10 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
     // backgroundColor: Colors.primaryColor
   },
-  accountAmount: {
-    paddingTop: 5,
-    fontWeight: "bold"
-  },
+
   actionButtonIcon: {
     color: "#fff"
   }

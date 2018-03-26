@@ -13,6 +13,7 @@ export default {
   blueColor: "#17c0eb",
   darkText: "#4d4d4d",
   darkerText: "black",
+  grayColor: "#ecf0f1",
 
   errorColor: "#d34651"
 };
