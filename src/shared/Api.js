@@ -1,7 +1,7 @@
 import UserStorage from "@shared/UserStorage";
 const { stringify } = require("querystring");
-
-const BASE_URL = "https://api-financial.herokuapp.com/v1";
+import Config from "react-native-config";
+const BASE_URL = Config.BASE_URL;
 // const BASE_URL = "http://192.168.1.8:3000/v1";
 export class ValidationError extends Error {
   constructor(message, validationErrors) {
