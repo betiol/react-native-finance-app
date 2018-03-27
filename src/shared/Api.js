@@ -79,8 +79,30 @@ export default class Api {
     });
   }
 
+  static async createAccount(account) {
+    console.log(account);
+    let endpoint = "/accounts";
+    return Api.fetchResource(
+      "POST",
+      endpoint,
+      {
+        account
+      },
+      true
+    );
+  }
+
   static async account() {
     let res = await Api.getListResource("/accounts", {}, (requireAuth = true));
+    return res;
+  }
+
+  static async accountTypes() {
+    let res = await Api.getListResource(
+      "/account_types",
+      {},
+      (requireAuth = true)
+    );
     return res;
   }
 

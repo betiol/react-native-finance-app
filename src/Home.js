@@ -65,7 +65,7 @@ const CustomDrawerContentComponent = ({
 
 export default DrawerNavigator(
   {
-    Dashboard: { screen: require("@screens").default },
+    Dashboard: { screen: require("@screens/dashboard").default },
     Occurrences: { screen: require("@screens/occurrences").default },
     Settings: { screen: require("@screens/settings").default }
   },

@@ -1,9 +1,9 @@
 import React from "react";
 
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Colors from "@shared/Colors";
 import { Icon } from "react-native-elements";
-import { StyledContainerView } from "@shared/Styled";
+import { StyledScrollView } from "@shared/Styled";
 import { connect } from "react-redux";
 import { fetchAccounts } from "@actions/account";
 import t from "tcomb-form-native";
@@ -18,7 +18,7 @@ class Accounts extends React.Component {
         component={TouchableOpacity}
         onPress={() => navigation.navigate("CreateAccount")}
         name={"add"}
-        size={40}
+        size={30}
         color={"#fff"}
       />
     )
@@ -32,7 +32,7 @@ class Accounts extends React.Component {
   };
 
   render() {
-    return <StyledContainerView>{this.renderAccount()}</StyledContainerView>;
+    return <StyledScrollView>{this.renderAccount()}</StyledScrollView>;
   }
 }
 
