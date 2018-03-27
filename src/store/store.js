@@ -16,8 +16,8 @@ export default function configureStore(callback) {
     store,
     {
       storage: AsyncStorage,
-      debounce: 10000,
-      blacklist: ["account"]
+      debounce: 10000
+      // blacklist: ["account"]
     },
     (err, state) => {
       if (err) {

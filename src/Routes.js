@@ -16,6 +16,14 @@ const RouteConfigMap = {
     navigationOptions: {
       gesturesEnabled: false
     }
+  },
+  Register: {
+    path: "/register",
+    screen: require("@screens/Register").default,
+    mode: "modal",
+    navigationOptions: {
+      gesturesEnabled: false
+    }
   }
 };
 

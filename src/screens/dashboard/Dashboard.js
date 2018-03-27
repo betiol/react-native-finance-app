@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
   containerAccount: {
     height: height / 3,
     justifyContent: "center"
-    // backgroundColor: Colors.primaryColor
   },
 
   actionButtonIcon: {

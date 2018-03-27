@@ -195,6 +195,12 @@ export class Login extends Component {
             value={formValue}
             onChange={this.onChangeForm}
           />
+          <Text
+            onPress={() => this.props.navigation.navigate("Register")}
+            style={{ color: "#fff", textAlign: "center" }}
+          >
+            Ainda não tem conta? Crie aqui!
+          </Text>
           {isFetching && (
             <LoadingSpinner
               color={"#fff"}

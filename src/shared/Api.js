@@ -79,6 +79,13 @@ export default class Api {
     });
   }
 
+  static async register(user) {
+    let endpoint = "/users";
+    return Api.fetchResource("POST", endpoint, {
+      user
+    });
+  }
+
   static async createAccount(account) {
     console.log(account);
     let endpoint = "/accounts";
