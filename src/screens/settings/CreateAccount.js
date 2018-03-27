@@ -85,10 +85,12 @@ class CreateAccount extends React.Component {
 
   render() {
     let accountsData = (this.props.accountTypes || []).reduce((acc, row) => {
+      console.log(row);
       acc[row.id] = row.name;
       return acc;
     }, {});
     let Accounts = t.enums(accountsData, "Accounts");
+    console.log(accountsData);
     var AccountForm = t.struct({
       accountType: Accounts,
       name: t.String,

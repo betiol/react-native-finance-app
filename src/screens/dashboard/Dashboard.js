@@ -64,40 +64,6 @@ class Dashboard extends React.Component {
     });
   };
 
-  renderFabButton = () => {
-    let { typeOccurrences } = this.props;
-    return typeOccurrences.map(occurrence => {
-      return (
-        <ActionButton.Item
-          key={occurrence.id}
-          buttonColor={
-            occurrence.name == "Receita" ? Colors.primaryColor : Colors.redColor
-          }
-          title={occurrence.name}
-          onPress={() => {
-            if (occurrence.name == "Receita") {
-              return this.props.navigation.navigate("Incomes", {
-                typeId: occurrence.id
-              });
-            }
-            if (occurrence.name == "Despesa") {
-              return this.props.navigation.navigate("Expenses", {
-                typeId: occurrence.id
-              });
-            }
-            if (occurrence.name == "Transferencia") {
-              return this.props.navigation.navigate("Transference", {
-                typeId: occurrence.id
-              });
-            }
-          }}
-        >
-          <Icon name="add" buttonColor={"#ccc"} color={"#fff"} />
-        </ActionButton.Item>
-      );
-    });
-  };
-
   render() {
     let { isFetching, typeOccurrences, totalValue, loadingTotal } = this.props;
     const loadAll = loadingTotal || !totalValue || isFetching;
