@@ -41,7 +41,9 @@ buck-out/
 \.buckd/
 *.keystore
 
-.env
+# env
+.env*
+!.env.sample
 
 # fastlane
 #
